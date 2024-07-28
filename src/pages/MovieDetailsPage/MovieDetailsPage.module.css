@@ -1,0 +1,26 @@
+.container {
+  padding: 20px;
+}
+
+.backButton {
+  display: inline-block;
+  margin-bottom: 20px;
+  text-decoration: none;
+  color: blue;
+}
+
+.poster {
+  max-width: 100%;
+  margin-bottom: 20px;
+}
+
+.additionalInfo {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.link {
+  text-decoration: none;
+  color: blue;
+}

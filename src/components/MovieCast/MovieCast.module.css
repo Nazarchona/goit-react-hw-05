@@ -1,0 +1,22 @@
+.container {
+  padding: 20px;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.item {
+  width: 200px;
+  text-align: center;
+}
+
+.image {
+  width: 200px;
+  height: 300px;
+  object-fit: cover;
+}

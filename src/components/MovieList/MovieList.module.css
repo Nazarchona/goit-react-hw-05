@@ -1,0 +1,30 @@
+.list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.item {
+  width: 400px;
+}
+
+.link {
+  text-decoration: none;
+  color: blue;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.image {
+  width: 400px;
+  height: 400px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
