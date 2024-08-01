@@ -3,6 +3,8 @@
   gap: 20px;
   padding: 20px;
   background-color: #eee;
+  align-items: center;
+  justify-content: center;
 }
 
 .link {
