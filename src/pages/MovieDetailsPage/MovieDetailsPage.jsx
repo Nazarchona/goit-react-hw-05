@@ -1,50 +1,58 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate, Link, Outlet, useLocation } from 'react-router-dom';
+import React, { useEffect, useState, useRef } from 'react';
+import { useParams, useNavigate, Outlet, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import styles from './MovieDetailsPage.module.css';
 
+const ACCESS_TOKEN = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlYzY3ZTU0Y2JlNGY3Zjk4ZjUzYTQwYWYzMTc0ZDQ5NCIsIm5iZiI6MTcyMjY4OTE4NS40OTU3NzgsInN1YiI6IjY2YTY3N2NmZTNlOTAyM2VhMjc0NjM4NCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.scrkp818LzbLops9vAOom4gdJiNECn116JGejy89uq4';
+const BASE_URL = 'https://api.themoviedb.org/3';
+
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [movie, setMovie] = useState(null);
   const [error, setError] = useState(null);
-  const location = useLocation();
-  const navigate = useNavigate();
-  const prevLocation = useRef(location.state?.from ?? '/movies');
+  const prevLocation = useRef(location.state?.from || '/movies');
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
       try {
-        const response = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}`, {
+        const response = await axios.get(`${BASE_URL}/movie/${movieId}`, {
           headers: {
-            Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlYzY3ZTU0Y2JlNGY3Zjk4ZjUzYTQwYWYzMTc0ZDQ5NCIsIm5iZiI6MTcyMjE4NjE3Ny4wOTQxMjIsInN1YiI6IjY2YTY3N2NmZTNlOTAyM2VhMjc0NjM4NCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.IwO5uMfO2mp3ZP89ubIAxbNZCst2yXB5pJIPsoQRtdI'
-          }
+            Authorization: `Bearer ${ACCESS_TOKEN}`,
+          },
         });
         setMovie(response.data);
       } catch (error) {
-        setError('Failed to fetch movie details');
+        console.error('Failed to fetch movie details:', error);
+        setError('Failed to fetch movie details.');
       }
     };
 
     fetchMovieDetails();
   }, [movieId]);
 
+  if (error) {
+    return <p>{error}</p>;
+  }
+
   return (
-    <div className={styles.movieDetailsPage}>
-      <button onClick={() => navigate(prevLocation.current)} className={styles.goBackButton}>Go back</button>
-      {error && <p className={styles.error}>{error}</p>}
+    <div className={styles.movieDetails}>
+      <button onClick={() => navigate(prevLocation.current)}>Go Back</button>
       {movie && (
-        <div className={styles.movieDetails}>
+        <>
           <h1>{movie.title}</h1>
-          <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} className={styles.moviePoster} />
           <p>{movie.overview}</p>
-          <Link to="cast" className={styles.link}>Cast</Link>
-          <Link to="reviews" className={styles.link}>Reviews</Link>
-        </div>
+          <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} />
+          <Outlet />
+        </>
       )}
-      <Outlet />
     </div>
   );
 };
 
 export default MovieDetailsPage;
+
+
+
 
